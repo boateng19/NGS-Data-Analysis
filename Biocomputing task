@@ -93,7 +93,7 @@ conda install -c bioconda bedtools
 
 
 #10. Install spades.py through the bioconda channel
-conda install -c bioconda spades.py
+conda install -c bioconda::spades
 
 
 #11. Install bcftools through the bioconda channel
