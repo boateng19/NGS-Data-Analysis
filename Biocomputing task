@@ -4,10 +4,10 @@
 echo "Agyekum Boateng"
 
 # 2. Create a folder titled AgyekumBoateng
-mkdir -p AgyekumBoateng
+mkdir  AgyekumBoateng
 
 # 3. Create another directory titled biocomputing and change into it
-mkdir -p biocomputing && cd biocomputing
+mkdir biocomputing && cd biocomputing
 
 # 4. Downloading the 3 files
 wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
