@@ -27,6 +27,7 @@ grep "tata" ../AgyekumBoateng/wildtype.fna
 
 # 8. If mutant, print all matching lines into a new file
 grep "tatatata" ../AgyekumBoateng/wildtype.fna > mutant_sequences.txt
+cat mutant_sequence.txt
 
 # 9. Counting the number of lines (excluding header) in the .gbk file
 sed -n '/^ORIGIN/,/^\/\//p' wildtype.gbk | grep -v "ORIGIN" | grep -v "//" | wc -l
@@ -82,36 +83,48 @@ figlet Agyekum
 
 conda install -c bioconda bwa
 
-#7. Install blast through the bioconda channel
+#7. Run bwa
+bwa
+
+#8. Install blast through the bioconda channel
 conda install -c bioconda blast
 
-#8. Install samtools through the bioconda channel
+#9. Run blast
+blast
+
+#10. Install samtools through the bioconda channel
 conda install -c bioconda samtools
 
-#9. Install bedtools through the bioconda channel
+#11. Run samtools
+samtools
+
+#12. Install bedtools through the bioconda channel
 conda install -c bioconda bedtools
 
+#13. Run bedtools
+bedtools
 
-#10. Install spades.py through the bioconda channel
+#14. Install spades.py through the bioconda channel
 conda install -c bioconda::spades
 
+#15. Run spades
+spades
 
-#11. Install bcftools through the bioconda channel
+#16. Install bcftools through the bioconda channel
 conda install -c bioconda bcftools
 
-#12. Install fastp through the bioconda channel
+#17. Run bcftools
+bcftools
+
+#18. Install fastp through the bioconda channel
 
 conda install -c bioconda fastp
 
-#13. Install multiqc through the bioconda channel
+#19. Run fastp
+fastp
+
+#20. Install multiqc through the bioconda channel
 conda install -c bioconda multiqc
 
-
-
-
-
-
-
-
-
-
+#21. Run multiqc
+multiqc
