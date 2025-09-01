@@ -1,4 +1,5 @@
 # Project 1: Bash Basic
+#!#/bin/bash
 
 # 1. Printing my name
 echo "Agyekum Boateng"
