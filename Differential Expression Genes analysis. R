@@ -1,0 +1,87 @@
+library(DESeq2)
+library(pheatmap)
+library(clusterProfiler)
+library(org.At.tair.db)
+library(DESeq2)
+library(apeglm)
+
+res <- lfcShrink(dds, coef="condition_UV_vs_Control", type="apeglm")
+
+setwd("/Users/mac/Desktop/Hackbio Internship/vasculature_uv_analysis/counts/")
+
+#getwd()
+# Import counts
+#counts <- read.delim("counts_matrix.txt", row.names=1, check.names=FALSE)
+counts <- read.delim("counts_matrix.txt",
+                     comment.char = "#",   # Ignore metadata lines
+                     row.names = 1,        # Use Geneid as row names
+                     check.names = FALSE)  # Keep sample names as they are
+
+readLines("counts_matrix.txt", n = 5)
+
+# Metadata
+colData <- data.frame(
+  row.names = colnames(counts),
+  condition = c("Control","Control","Control","UV","UV","UV")
+)
+
+# DESeq2
+dds <- DESeqDataSetFromMatrix(counts, colData, design = ~ condition)
+dds <- dds[rowSums(counts(dds)) > 10,]
+dds <- DESeq(dds)
+
+res <- results(dds, contrast=c("condition","UV","Control"))
+#res <- lfcShrink(dds, coef="condition_UV_vs_Control", res=res)resOrdered <- res[order(res$padj)]
+res <- lfcShrink(dds, coef="condition_UV_vs_Control", type="apeglm")
+resOrdered <- res[order(res$padj), ]
+
+# Save results
+write.csv(as.data.frame(resOrdered), "../results/deseq2_results_all.csv")
+
+# Top 100 DE genes
+top100 <- head(resOrdered, 100)
+write.csv(as.data.frame(top100), "../results/top100_DE_genes.csv")
+
+#Visualizing result
+#Overview of gene expression changes
+plotMA(res, ylim=c(-3, 3), main="DESeq2: UV vs Control (Shrinkage Applied)")
+abline(h=c(-1,1), col="blue", lty=2)  # mark 2-fold change lines
+
+# Get significant genes
+sig_genes <- subset(res, padj < 0.05)
+
+library(clusterProfiler)
+library(org.At.tair.db)
+
+ego <- enrichGO(
+  gene = names(gene_list),
+  OrgDb = org.At.tair.db,
+  keyType = "TAIR",
+  ont = "BP", # Biological Process
+  pAdjustMethod = "BH",
+  qvalueCutoff = 0.05
+)
+
+
+# Extract gene IDs (TAIR IDs) with fold changes
+gene_list <- sig_genes$log2FoldChange
+names(gene_list) <- rownames(sig_genes)
+
+# Sort decreasing for enrichment analysis
+gene_list <- sort(gene_list, decreasing = TRUE)
+
+#Significance and effect 
+library(ggplot2)
+
+res_df <- as.data.frame(res)
+res_df$significance <- ifelse(res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 1, "Significant", "Not Significant")
+
+ggplot(res_df, aes(x=log2FoldChange, y=-log10(padj), color=significance)) +
+  geom_point(alpha=0.6, size=1.5) +
+  scale_color_manual(values=c("gray", "red")) +
+  theme_minimal() +
+  labs(title="Volcano Plot: UV vs Control",
+       x="log2 Fold Change",
+       y="-log10 Adjusted p-value") +
+  geom_vline(xintercept=c(-1,1), linetype="dashed", color="blue") +
+  geom_hline(yintercept=-log10(0.05), linetype="dashed", color="blue")
