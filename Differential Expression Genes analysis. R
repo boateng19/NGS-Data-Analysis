@@ -5,7 +5,6 @@ library(org.At.tair.db)
 library(DESeq2)
 library(apeglm)
 
-res <- lfcShrink(dds, coef="condition_UV_vs_Control", type="apeglm")
 
 setwd("/Users/mac/Desktop/Hackbio Internship/vasculature_uv_analysis/counts/")
 
