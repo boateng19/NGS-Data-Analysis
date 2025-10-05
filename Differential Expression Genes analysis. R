@@ -50,9 +50,6 @@ abline(h=c(-1,1), col="blue", lty=2)  # mark 2-fold change lines
 # Get significant genes
 sig_genes <- subset(res, padj < 0.05)
 
-library(clusterProfiler)
-library(org.At.tair.db)
-
 ego <- enrichGO(
   gene = names(gene_list),
   OrgDb = org.At.tair.db,
@@ -61,6 +58,8 @@ ego <- enrichGO(
   pAdjustMethod = "BH",
   qvalueCutoff = 0.05
 )
+#View the top 5 enriched pathways
+head(ego, 5)
 
 
 # Extract gene IDs (TAIR IDs) with fold changes
