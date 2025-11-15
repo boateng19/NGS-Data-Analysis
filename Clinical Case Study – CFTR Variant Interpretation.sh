@@ -83,7 +83,7 @@ gatk HaplotypeCaller \
 
 3.6 Joint Genotyping
 bash
-Copy code
+
 gatk CombineGVCFs \
  -R Homo_sapiens_assembly38.fasta \
  --variant child.g.vcf.gz \
@@ -97,7 +97,7 @@ gatk GenotypeGVCFs \
 
 3.7 Hard Filtering
 bash
-Copy code
+
 gatk VariantFiltration \
  -V cohort.raw.vcf.gz \
  -O cohort.filtered.vcf.gz \
@@ -106,18 +106,19 @@ gatk VariantFiltration \
 
 3.8 Extract CFTR Region (chr7:117,120,000–117,330,000)
 bash
-Copy code
+
 bcftools view -r 7:117120000-117330000 cohort.filtered.vcf.gz -o CFTR.vcf
 
 3.9 Variant Annotation (VEP)
 bash
-Copy code
+
 vep -i CFTR.vcf -o CFTR_annotated.vcf --cache --everything --assembly GRCh38
+
 4. Results
 4.1 Identified Pathogenic CFTR Variants in the Child
-Variant	Genotype (Child)	Genotype (Father)	Clinical Significance	Notes
-chr7:117199644 C>T (c.1521_1523delCTT) → ΔF508	Het	Present (Het)	Pathogenic	Most common CF variant
-chr7:117307003 G>A (W1282X)	Het	Absent	Pathogenic	Nonsense mutation → likely de novo or inherited from mother
+Variant   										Genotype (Child)	Genotype (Father)	Clinical Significance	Notes
+chr7:117199644 C>T (c.1521_1523delCTT) → ΔF508	Het						Present (Het)	Pathogenic				Most common CF variant
+chr7:117307003 G>A (W1282X)						Het						Absent			Pathogenic				Nonsense mutation → likely de novo or inherited from mother
 
 4.2 Interpretation of Findings
 Variant 1: ΔF508 (c.1521_1523delCTT)
